@@ -1,4 +1,4 @@
-# apz-pzpi-22-8-tovstukha-ivan 
+# apz-pzpi-22-8-tovstukha-ivan  
 ПЗПІ-22-8  
 Товстуха Іван  
 «Шаблон (патерн) проєктування "Factory method" (Заводський метод)»  
