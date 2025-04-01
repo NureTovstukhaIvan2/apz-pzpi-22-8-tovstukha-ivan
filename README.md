@@ -1,5 +1,5 @@
-# apz-pzpi-22-8-tovstukha-ivan  
-ПЗПІ-22-8   
+# apz-pzpi-22-8-tovstukha-ivan 
+ПЗПІ-22-8  
 Товстуха Іван  
 «Шаблон (патерн) проєктування "Factory method" (Заводський метод)»  
 «Архітектура програмної системи Telegram»  
