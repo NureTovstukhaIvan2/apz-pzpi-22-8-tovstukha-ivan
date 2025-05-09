@@ -151,67 +151,67 @@
      ДОДАТОК В
      Програмний код
      
-     1.  # Генерація ключа для симетричного шифрування (AES)
-     2.  def generate_symmetric_key():
-     3.      return get_random_bytes(32)  # 256 біт для AES
-     4.  
-     5.  # Шифрування повідомлення за допомогою AES
-     6.  def encrypt_message(key, message):
-     7.      cipher = AES.new(key, AES.MODE_CBC)
-     8.      ciphertext = cipher.encrypt(pad(message.encode(), AES.block_size))
-     9.      return cipher.iv + ciphertext  # Повертаємо IV разом з шифрованим повідомленням
-     10. 
-     11. # Розшифрування повідомлення
-     12. def decrypt_message(key, encrypted_message):
-     13.     iv = encrypted_message[:16]  # Перші 16 байт - IV
-     14.     ciphertext = encrypted_message[16:]
-     15.     cipher = AES.new(key, AES.MODE_CBC, iv)
-     16.     return unpad(cipher.decrypt(ciphertext), AES.block_size).decode()
-     17. 
-     18. # Генерація пари ключів RSA
-     19. def generate_rsa_keys():
-     20.     key = RSA.generate(2048)
-     21.     private_key = key.export_key()
-     22.     public_key = key.publickey().export_key()
-     23.     return private_key, public_key
-     24. 
-     25. # Підписування повідомлення за допомогою RSA
-     26. def sign_message(private_key, message):
-     27.     key = RSA.import_key(private_key)
-     28.     h = hashlib.sha256(message.encode()).digest()
-     29.     signature = pkcs1_15.new(key).sign(h)
-     30.     return signature
-     31. 
-     32. # Перевірка підпису повідомлення
-     33. def verify_signature(public_key, message, signature):
-     34.     key = RSA.import_key(public_key)
-     35.     h = hashlib.sha256(message.encode()).digest()
-     36.     try:
-     37.         pkcs1_15.new(key).verify(h, signature)
-     38.         return True
-     39.     except (ValueError, TypeError):
-     40.         return False
-     41. 
-     42. def mtproto_logic():
-     43.     # Генерація ключів
-     44.     symmetric_key = generate_symmetric_key()
-     45.     private_key, public_key = generate_rsa_keys()
-     46. 
-     47.     # Оригінальне повідомлення
-     48.     message = "MTProto message!"
-     49. 
-     50.     # Шифрування повідомлення
-     51.     encrypted_message = encrypt_message(symmetric_key, message)
-     52.     print("Encrypted Message:", encrypted_message)
-     53. 
-     54.     # Розшифрування повідомлення
-     55.     decrypted_message = decrypt_message(symmetric_key, encrypted_message)
-     56.     print("Decrypted Message:", decrypted_message)
-     57. 
-     58.     # Підписування повідомлення
-     59.     signature = sign_message(private_key, message)
-     60.     print("Message Signature:", signature)
-     61. 
-     62.     # Перевірка підпису
-     63.     is_valid = verify_signature(public_key, message, signature)
-     64.     print("Signature valid:", is_valid)
+     1  # Генерація ключа для симетричного шифрування (AES)
+     2  def generate_symmetric_key():
+     3      return get_random_bytes(32)  # 256 біт для AES
+     4  
+     5  # Шифрування повідомлення за допомогою AES
+     6  def encrypt_message(key, message):
+     7      cipher = AES.new(key, AES.MODE_CBC)
+     8      ciphertext = cipher.encrypt(pad(message.encode(), AES.block_size))
+     9      return cipher.iv + ciphertext  # Повертаємо IV разом з шифрованим повідомленням
+     10 
+     11 # Розшифрування повідомлення
+     12 def decrypt_message(key, encrypted_message):
+     13     iv = encrypted_message[:16]  # Перші 16 байт - IV
+     14     ciphertext = encrypted_message[16:]
+     15     cipher = AES.new(key, AES.MODE_CBC, iv)
+     16     return unpad(cipher.decrypt(ciphertext), AES.block_size).decode()
+     17 
+     18 # Генерація пари ключів RSA
+     19 def generate_rsa_keys():
+     20     key = RSA.generate(2048)
+     21     private_key = key.export_key()
+     22     public_key = key.publickey().export_key()
+     23     return private_key, public_key
+     24 
+     25 # Підписування повідомлення за допомогою RSA
+     26 def sign_message(private_key, message):
+     27     key = RSA.import_key(private_key)
+     28     h = hashlib.sha256(message.encode()).digest()
+     29     signature = pkcs1_15.new(key).sign(h)
+     30     return signature
+     31 
+     32 # Перевірка підпису повідомлення
+     33 def verify_signature(public_key, message, signature):
+     34     key = RSA.import_key(public_key)
+     35     h = hashlib.sha256(message.encode()).digest()
+     36     try:
+     37         pkcs1_15.new(key).verify(h, signature)
+     38         return True
+     39     except (ValueError, TypeError):
+     40         return False
+     41 
+     42 def mtproto_logic():
+     43     # Генерація ключів
+     44     symmetric_key = generate_symmetric_key()
+     45     private_key, public_key = generate_rsa_keys()
+     46 
+     47     # Оригінальне повідомлення
+     48     message = "MTProto message!"
+     49 
+     50     # Шифрування повідомлення
+     51     encrypted_message = encrypt_message(symmetric_key, message)
+     52     print("Encrypted Message:", encrypted_message)
+     53 
+     54     # Розшифрування повідомлення
+     55     decrypted_message = decrypt_message(symmetric_key, encrypted_message)
+     56     print("Decrypted Message:", decrypted_message)
+     57 
+     58     # Підписування повідомлення
+     59     signature = sign_message(private_key, message)
+     60     print("Message Signature:", signature)
+     61 
+     62     # Перевірка підпису
+     63     is_valid = verify_signature(public_key, message, signature)
+     64     print("Signature valid:", is_valid)
