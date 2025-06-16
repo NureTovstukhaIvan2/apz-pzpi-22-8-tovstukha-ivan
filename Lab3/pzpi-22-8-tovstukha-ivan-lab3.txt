@@ -1,0 +1,646 @@
+﻿             МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ ХАРКІВСЬКИЙ НАЦІОНАЛЬНИЙ УНІВЕРСИТЕТ РАДІОЕЛЕКТРОНІКИ
+
+
+Кафедра «Програмної інженерії»
+
+
+
+
+
+ЗВІТ
+З лабораторної роботи №3 
+з дисципліни
+«Архітектура програмного забезпечення»
+
+
+
+
+Виконав:	Перевірив
+ст. гр. ПЗПІ-22-8	ст. викладач каф. ПІ
+Товстуха Іван	Сокорчук І. П.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Харків 2025
+1 ІСТОРІЯ ЗМІН
+     
+          У цьому розділі представлено історію внесених змін до звіту, що наведено у табл. 1.
+     
+№ДатаВерсія звітуОпис змін та виправлень118.05.20250.1Створено розділ «Історія змін»218.05.20250.1Створено розділ «Завдання»318.05.20250.1Створено розділ «Опис виконаної роботи»420.05.20250.1Створено розділ «Висновки»520.05.20250.1Додано додаток А з посиланням на відеоролик620.05.20250.1Додано додаток Б з графічними матеріалами721.05.20250.1Додано додаток В з програмним кодом
+2 ЗАВДАННЯ
+     
+     Мета роботи полягає у розробці клієнтської front-end частини програмної системи «AquaSense», яка призначена для моніторингу та керування параметрами акваріумів. У межах реалізації клієнтської частини системи AquaSense необхідно створити інтуїтивно зрозумілий інтерфейс, що забезпечує ефективне управління акваріумами та їх параметрами, включаючи температуру води, рівень кисню та кислотності. Основними функціональними компонентами системи є: реєстрація та авторизація користувачів з різними ролями (адміністратор, менеджер, звичайний користувач), перегляд списку акваріумів, пошук та фільтрація акваріумів, додавання нових акваріумів, редагування їх параметрів, видалення акваріумів за потреби, управління пристроями (термостатами, аераторами, контролерами pH), перегляд статистики та історії змін параметрів у вигляді графіків, а також можливість імітації роботи сенсорів для тестування системи. Система повинна забезпечувати розподіл прав доступу відповідно до ролей користувачів, де адміністратор має повний контроль над системою, менеджер може керувати акваріумами та пристроями, а звичайний користувач – лише переглядати призначені йому акваріуми. Інтерфейс має бути реалізований з використанням сучасних технологій, таких як React та Bootstrap, для забезпечення швидкої роботи та адаптивності до різних пристроїв.
+     
+     
+     
+     
+     
+     
+     
+     
+     
+3 ОПИС ВИКОНАНОЇ РОБОТИ
+     
+     3.1 Аутентифікація та авторизація
+     
+     Реалізовано систему аутентифікації з використанням JWT (JSON Web Token), що дозволяє користувачам увійти в систему та зберігати сесію навіть після оновлення сторінки. Токен доступу зберігається у localStorage, що забезпечує безперервний доступ до системи. Авторизація побудована на основі ролей: ADMIN (повний доступ), MANAGER (управління акваріумами та пристроями) та USER (лише перегляд призначених акваріумів). Для захисту маршрутів реалізовано механізм перевірки прав доступу перед відображенням сторінок.
+     
+     3.2 Робота з акваріумами та пристроями
+     
+     Система забезпечує повний цикл управління акваріумами через CRUD-операції (створення, читання, оновлення, видалення). Користувачі можуть:
+* додавати нові акваріуми, вказуючи назву та об’єм;
+* редагувати існуючі параметри (наприклад, змінювати температуру чи рівень pH);
+* видаляти акваріуми за потреби;
+* прив’язувати пристрої (термостати, аератори, pH-контролери) до конкретних акваріумів;
+* керувати статусом пристроїв (активний, вимкнений, на обслуговуванні).
+     Дані завантажуються асинхронно через REST API, з відображенням індикатора завантаження та обробкою помилок.
+     
+     
+     
+     3.3 Моніторинг параметрів та візуалізація даних
+     
+     Для зручності аналізу реалізовано:
+* графіки зміни параметрів (температура, рівень кисню, pH) за певний період;
+* індикатори стану (кольорові позначки для швидкої оцінки критичності показників);
+* імітацію даних сенсорів для тестування системи без реальних пристроїв.
+     Дані зберігаються в історії, що дозволяє відстежувати динаміку змін.
+     
+     3.4 Управління користувачами
+     
+* адміністратори можуть створювати, редагувати та видаляти облікові записи;
+* менеджери мають доступ до управління акваріумами, але не можуть змінювати налаштування користувачів;
+* звичайні користувачі отримують доступ лише до призначених їм акваріумів у режимі перегляду;
+* реалізовано пошук та фільтрацію акваріумів за назвою, об’ємом або статусом пристроїв.
+     
+     3.5 Додаткові функції
+     
+* резервне копіювання даних: можливість експорту інформації про акваріуми у форматі JSON;
+* адаптивний інтерфейс: система коректно відображається на різних пристроях (ПК, планшети, смартфони) завдяки використанню Bootstrap;
+* сповіщення: користувачі отримують повідомлення про критичні зміни параметрів (наприклад, занадто висока температура).
+     
+     3.6 Технічна реалізація
+     
+* Frontend: розроблено на React з використанням React Router для навігації.
+* Стилізація: застосовано Bootstrap для створення сучасного та зручного інтерфейсу.
+* Графіки: побудовано за допомогою Chart.js для наочної візуалізації даних.
+* API-запити: використано Axios для взаємодії з бекендом.
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+4 ВИСНОВОК
+     
+     У ході розробки проекту AquaSense було створено повноцінний веб-клієнт для системи моніторингу та керування акваріумами, яка поєднує в собі сучасні технології фронтенд-розробки та практичні функції для ефективного контролю параметрів води. Головною метою було забезпечення зручного, безпечного та адаптованого під різні ролі користувачів інтерфейсу, що дозволяє адміністраторам, менеджерам та звичайним користувачам взаємодіяти з системою відповідно до їхніх прав доступу. 
+     Ключовим досягненням стала реалізація механізму аутентифікації та авторизації на основі JWT, що забезпечує безпечний вхід у систему та збереження сесії. Розмежування ролей (ADMIN, MANAGER, USER) дозволяє обмежити доступ до певних функцій, запобігаючи несанкціонованим змінам. Для зручності управління акваріумами було реалізовано CRUD-операції, включаючи додавання, редагування та видалення акваріумів, а також керування пристроями (термостатами, аераторами, pH-контролерами). 
+     Важливим аспектом роботи стала візуалізація даних за допомогою графіків (Chart.js), що дозволяє відстежувати динаміку змін температури, рівня кисню та кислотності в режимі реального часу. Інтерактивний інтерфейс з індикаторами стану спрощує моніторинг критичних параметрів, а імітація даних сенсорів дає можливість тестувати систему без фізичних пристроїв. 
+     Для підвищення гнучкості системи було додано пошук та фільтрацію акваріумів, а також можливість експорту даних у форматі JSON для резервного копіювання. Адаптивний дизайн (Bootstrap) забезпечує коректне відображення на різних пристроях, що робить систему доступною для використання як на комп’ютерах, так і на мобільних пристроях. 
+     Таким чином, система AquaSense успішно вирішує поставлені завдання, надаючи інструменти для ефективного управління акваріумами, а її модульна структура та використання сучасних технологій закладають основу для подальшого масштабування та вдосконалення функціоналу.
+ДОДАТОК А
+Відеозапис
+
+Відеозапис презентації результатів лабораторної роботи: 
+Хронологічний опис відеозапису:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ДОДАТОК Б
+Графічні матеріали
+
+
+Рисунок Б.1 – UML діаграма прецедентів
+
+
+Рисунок Б.2 — UML-діаграма компонентів
+
+Рисунок Б.3 – UML діаграма діяльності
+
+Рисунок Б.4 – UML-діаграма станів
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ДОДАТОК В
+Програмний код
+
+В.1 Реєстрація
+GitHub репозиторій: https://github.com/NureTovstukhaIvan2/apz-pzpi-22-8-tovstukha-ivan/tree/main/Lab2/pzpi-22-8-tovstukha-ivan-lab2/ pages/Register.js
+
+1   import React, { useState } from "react";
+2   import { useNavigate } from "react-router-dom";
+3   import { Form, Button, Alert } from "react-bootstrap";
+4   import AuthService from "../services/auth.service";
+5   
+6   const Register = () => {
+7     const [name, setName] = useState("");
+8     const [email, setEmail] = useState("");
+9     const [password, setPassword] = useState("");
+10    const [role, setRole] = useState("USER");
+11    const [error, setError] = useState("");
+12    const [success, setSuccess] = useState(false);
+13    const navigate = useNavigate();
+14  
+15    const handleRegister = async (e) => {
+16      e.preventDefault();
+17      setError("");
+18      setSuccess(false);
+19  
+20      try {
+21        await AuthService.register(name, email, password, role);
+22        setSuccess(true);
+23        setTimeout(() => {
+24          navigate("/login");
+25        }, 2000);
+26      } catch (err) {
+27        setError(err.response?.data?.message || "Registration failed");
+28      }
+29    };
+30  
+31    return (
+32      <div className="col-md-6 offset-md-3 mt-5">
+33        <h2>Register</h2>
+34  
+35        {error && <Alert variant="danger">{error}</Alert>}
+36        {success && (
+37          <Alert variant="success">
+38            Registration successful! You will be redirected to login page.
+39          </Alert>
+40        )}
+41  
+42        <Form onSubmit={handleRegister}>
+43          <Form.Group className="mb-3">
+44            <Form.Label>Name</Form.Label>
+45            <Form.Control
+46              type="text"
+47              value={name}
+48              onChange={(e) => setName(e.target.value)}
+49              required
+50            />
+51          </Form.Group>
+52  
+53          <Form.Group className="mb-3">
+54            <Form.Label>Email</Form.Label>
+55            <Form.Control
+56              type="email"
+57              value={email}
+58              onChange={(e) => setEmail(e.target.value)}
+59              required
+60            />
+61          </Form.Group>
+62  
+63          <Form.Group className="mb-3">
+64            <Form.Label>Password</Form.Label>
+65            <Form.Control
+66              type="password"
+67              value={password}
+68              onChange={(e) => setPassword(e.target.value)}
+69              required
+70              minLength="6"
+71            />
+72          </Form.Group>
+73  
+74          <Form.Group className="mb-3">
+75            <Form.Label>Role</Form.Label>
+76            <Form.Select
+77              value={role}
+78              onChange={(e) => setRole(e.target.value)}
+79              disabled={!AuthService.isAdmin()}
+80            >
+81              <option value="USER">User</option>
+82              {AuthService.isAdmin() && (
+83                <>
+84                  <option value="MANAGER">Manager</option>
+85                  <option value="ADMIN">Admin</option>
+86                </>
+87              )}
+88            </Form.Select>
+89          </Form.Group>
+90  
+91          <Button variant="primary" type="submit" className="w-100">
+92            Register
+93          </Button>
+94        </Form>
+95  
+96        <div className="mt-3 text-center">
+97          Already have an account? <a href="/login">Login</a>
+98        </div>
+99      </div>
+100   );
+101 };
+102 
+103 export default Register;
+
+
+
+В.2 Авторизація
+GitHub репозиторій: https://github.com/NureTovstukhaIvan2/apz-pzpi-22-8-tovstukha-ivan/tree/main/Lab2/pzpi-22-8-tovstukha-ivan-lab2/ pages/Login.js
+
+1   import React, { useState } from "react";
+2   import { useNavigate } from "react-router-dom";
+3   import { Form, Button, Alert } from "react-bootstrap";
+4   import { useTranslation } from "react-i18next";
+5   import AuthService from "../services/auth.service";
+6   
+7   const Login = ({ t }) => {
+8     const [email, setEmail] = useState("");
+9     const [password, setPassword] = useState("");
+10    const [error, setError] = useState("");
+11    const navigate = useNavigate();
+12  
+13    const handleLogin = async (e) => {
+14      e.preventDefault();
+15      setError("");
+16  
+17      try {
+18        await AuthService.login(email, password);
+19        navigate("/");
+20      } catch (err) {
+21        setError(t("invalidCredentials"));
+22      }
+23    };
+24  
+25    return (
+26      <div className="col-md-6 offset-md-3 mt-5">
+27        <h2>{t("login")}</h2>
+28        <p>Admin: admin@gmail.com / 11111111</p>
+29  
+30        {error && <Alert variant="danger">{error}</Alert>}
+31  
+32        <Form onSubmit={handleLogin}>
+33          <Form.Group className="mb-3">
+34            <Form.Label>{t("email")}</Form.Label>
+35            <Form.Control
+36              type="email"
+37              value={email}
+38              onChange={(e) => setEmail(e.target.value)}
+39              required
+40            />
+41          </Form.Group>
+42  
+43          <Form.Group className="mb-3">
+44            <Form.Label>{t("password")}</Form.Label>
+45            <Form.Control
+46              type="password"
+47              value={password}
+48              onChange={(e) => setPassword(e.target.value)}
+49              required
+50            />
+51          </Form.Group>
+52  
+53          <Button variant="primary" type="submit">
+54            {t("signIn")}
+55          </Button>
+56        </Form>
+57      </div>
+58    );
+59  };
+60  
+61  export default Login;
+
+В.3 Головна сторінка
+GitHub репозиторій: https://github.com/NureTovstukhaIvan2/apz-pzpi-22-8-tovstukha-ivan/tree/main/Lab2/pzpi-22-8-tovstukha-ivan-lab2/ pages/Home.js
+
+1   import React, { useEffect, useState } from "react";
+2   import { Alert } from "react-bootstrap";
+3   import { useTranslation } from "react-i18next";
+4   import AquariumCard from "../components/AquariumCard";
+5   import AquariumService from "../services/aquarium.service";
+6   import AuthService from "../services/auth.service";
+7   
+8   const Home = ({ t }) => {
+9     const [aquariums, setAquariums] = useState([]);
+10    const [error, setError] = useState("");
+11    const currentUser = AuthService.getCurrentUser();
+12  
+13    useEffect(() => {
+14      if (currentUser) {
+15        AquariumService.getAllAquariums()
+16          .then((response) => {
+17            setAquariums(response.data);
+18          })
+19          .catch((err) => {
+20            setError(t("failedToLoadAquariums"));
+21          });
+22      }
+23    }, [currentUser, t]);
+24  
+25    if (!currentUser) {
+26      return (
+27        <div className="text-center mt-5">
+28          <h2>{t("welcome")}</h2>
+29          <p>{t("pleaseLogin")}</p>
+30        </div>
+31      );
+32    }
+33  
+34    return (
+35      <div>
+36        <h2 className="mb-4">{t("yourAquariums")}</h2>
+37  
+38        {error && <Alert variant="danger">{error}</Alert>}
+39  
+40        <div className="row">
+41          {aquariums.length > 0 ? (
+42            aquariums.map((aquarium) => (
+43              <div className="col-md-4" key={aquarium.id}>
+44                <AquariumCard
+45                  aquarium={aquarium}
+46                  canEdit={
+47                    currentUser.role === "ADMIN" || currentUser.role === "MANAGER"
+48                  }
+49                  t={t}
+50                />
+51              </div>
+52            ))
+53          ) : (
+54            <Alert variant="info">{t("noAquariums")}</Alert>
+55          )}
+56        </div>
+57      </div>
+58    );
+59  };
+60  
+61  export default Home;
+
+В.4 Сторінка для керування пристроями
+GitHub репозиторій: https://github.com/NureTovstukhaIvan2/apz-pzpi-22-8-tovstukha-ivan/tree/main/Lab2/pzpi-22-8-tovstukha-ivan-lab2/ pages/Devices.js
+
+1   import React, { useEffect, useState } from "react";
+2   import { Alert } from "react-bootstrap";
+3   import DeviceCard from "../components/DeviceCard";
+4   import AquariumService from "../services/aquarium.service";
+5   import DeviceService from "../services/device.service";
+6   import AuthService from "../services/auth.service";
+7   
+8   const Devices = () => {
+9     const [aquariums, setAquariums] = useState([]);
+10    const [error, setError] = useState("");
+11    const currentUser = AuthService.getCurrentUser();
+12  
+13    useEffect(() => {
+14      loadAquariums();
+15    }, []);
+16  
+17    const loadAquariums = () => {
+18      AquariumService.getAllAquariums()
+19        .then((response) => {
+20          setAquariums(response.data);
+21        })
+22        .catch((err) => {
+23          setError("Failed to load aquariums");
+24        });
+25    };
+26  
+27    const handleStatusChange = (deviceId, newStatus) => {
+28      DeviceService.updateDeviceStatus(deviceId, newStatus)
+29        .then(() => {
+30          loadAquariums();
+31        })
+32        .catch((err) => {
+33          setError("Failed to update device status");
+34        });
+35    };
+36  
+37    const handleDeleteDevice = (deviceId) => {
+38      DeviceService.deleteDevice(deviceId)
+39        .then(() => {
+40          loadAquariums();
+41        })
+42        .catch((err) => {
+43          setError("Failed to delete device");
+44        });
+45    };
+46  
+47    if (currentUser.role !== "ADMIN" && currentUser.role !== "MANAGER") {
+48      return (
+49        <Alert variant="danger">
+50          You don't have permission to access this page.
+51        </Alert>
+52      );
+53    }
+54  
+55    // Get all devices from all aquariums
+56    const allDevices = [];
+57    aquariums.forEach((aquarium) => {
+58      if (aquarium.devices && aquarium.devices.length > 0) {
+59        aquarium.devices.forEach((device) => {
+60          allDevices.push({
+61            ...device,
+62            aquariumName: aquarium.name,
+63          });
+64        });
+65      }
+66    });
+67  
+68    return (
+69      <div>
+70        <h2 className="mb-4">All Devices</h2>
+71  
+72        {error && <Alert variant="danger">{error}</Alert>}
+73  
+74        <div className="row">
+75          {allDevices.length > 0 ? (
+76            allDevices.map((device) => (
+77              <div className="col-md-6" key={device.id}>
+78                <DeviceCard
+79                  device={device}
+80                  onStatusChange={handleStatusChange}
+81                  onDelete={handleDeleteDevice}
+82                />
+83                <p className="text-muted">Aquarium: {device.aquariumName}</p>
+84              </div>
+85            ))
+86          ) : (
+87            <Alert variant="info">No devices found.</Alert>
+88          )}
+89        </div>
+90      </div>
+91    );
+92  };
+93  
+94  export default Devices;
+
+В.5 Сторінка для керування акваріумами
+GitHub репозиторій: https://github.com/NureTovstukhaIvan2/apz-pzpi-22-8-tovstukha-ivan/tree/main/Lab2/pzpi-22-8-tovstukha-ivan-lab2/ pages/Aquariums.js
+
+1   import React, { useEffect, useState } from "react";
+2   import { Button, Modal, Form, Alert, Row, Col } from "react-bootstrap";
+3   import AquariumCard from "../components/AquariumCard";
+4   import AquariumService from "../services/aquarium.service";
+5   import AuthService from "../services/auth.service";
+6   
+7   const Aquariums = () => {
+8     const [aquariums, setAquariums] = useState([]);
+9     const [showModal, setShowModal] = useState(false);
+10    const [name, setName] = useState("");
+11    const [volume, setVolume] = useState("");
+12    const [error, setError] = useState("");
+13    const currentUser = AuthService.getCurrentUser();
+14  
+15    useEffect(() => {
+16      loadAquariums();
+17    }, []);
+18  
+19    const loadAquariums = () => {
+20      AquariumService.getAllAquariums()
+21        .then((response) => {
+22          setAquariums(response.data);
+23        })
+24        .catch((err) => {
+25          setError("Failed to load aquariums");
+26        });
+27    };
+28  
+29    const handleCreateAquarium = () => {
+30      setError("");
+31  
+32      AquariumService.createAquarium(name, volume)
+33        .then(() => {
+34          setShowModal(false);
+35          setName("");
+36          setVolume("");
+37          loadAquariums();
+38        })
+39        .catch((err) => {
+40          setError("Failed to create aquarium");
+41        });
+42    };
+43  
+44    return (
+45      <div>
+46        <div className="d-flex justify-content-between align-items-center mb-4">
+47          <h2>All Aquariums</h2>
+48          {(currentUser.role === "ADMIN" || currentUser.role === "MANAGER") && (
+49            <Button variant="primary" onClick={() => setShowModal(true)}>
+50              Add Aquarium
+51            </Button>
+52          )}
+53        </div>
+54  
+55        {error && <Alert variant="danger">{error}</Alert>}
+56  
+57        <div className="row">
+58          {aquariums.map((aquarium) => (
+59            <div className="col-md-4" key={aquarium.id}>
+60              <AquariumCard
+61                aquarium={aquarium}
+62                canEdit={
+63                  currentUser.role === "ADMIN" || currentUser.role === "MANAGER"
+64                }
+65              />
+66            </div>
+67          ))}
+68        </div>
+69  
+70        <Modal show={showModal} onHide={() => setShowModal(false)}>
+71          <Modal.Header closeButton>
+72            <Modal.Title>Add New Aquarium</Modal.Title>
+73          </Modal.Header>
+74          <Modal.Body>
+75            <Form>
+76              <Form.Group className="mb-3">
+77                <Form.Label>Name</Form.Label>
+78                <Form.Control
+79                  type="text"
+80                  value={name}
+81                  onChange={(e) => setName(e.target.value)}
+82                  required
+83                />
+84              </Form.Group>
+85  
+86              <Form.Group className="mb-3">
+87                <Form.Label>Volume (liters)</Form.Label>
+88                <Form.Control
+89                  type="number"
+90                  value={volume}
+91                  onChange={(e) => setVolume(e.target.value)}
+92                  required
+93                />
+94              </Form.Group>
+95            </Form>
+96          </Modal.Body>
+97          <Modal.Footer>
+98            <Button variant="secondary" onClick={() => setShowModal(false)}>
+99              Cancel
+100           </Button>
+101           <Button variant="primary" onClick={handleCreateAquarium}>
+102             Save
+103           </Button>
+104         </Modal.Footer>
+105       </Modal>
+106     </div>
+107   );
+108 };
+109 
+110 export default Aquariums;
+
+2
+
+
